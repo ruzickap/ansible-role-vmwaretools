@@ -28,4 +28,4 @@ script:
     || (echo '*** Idempotence test: fail' && exit 1)
   # Show details
   - find /etc/vmware-tools  
-  - dpkg -l *vm*
+  - dpkg -l *open-vm-tools* *vmware*

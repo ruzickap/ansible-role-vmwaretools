@@ -1,10 +1,11 @@
 ---
 # tasks file for vmwaretools/Ubuntu
 
-- name: Check if the vmware-tools-esx-nox wasn't installed previously
+- name: Check if the vmware-tools-esx-nox is not installed already
   command: /usr/bin/dpkg -l vmware-tools-esx-nox
   register: dpkg_result
   changed_when: false
+  ignore_errors: true
 
 #This needs to be separated because of differencies in repository names vs. architecture: x86_64 != amd64
 - name: Download vmware-tools repository file for x86_64/amd64 to /tmp
