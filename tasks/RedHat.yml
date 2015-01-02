@@ -1,0 +1,19 @@
+---
+# tasks file for vmwaretools/RedHat
+
+- name: Install vmware-tools repository.
+  yum: name={{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-RHEL{{ ansible_distribution_major_version }}-{{ vmwaretools_repo_version }}.el{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm state=present
+  when: ansible_distribution_major_version|int <= 6
+
+- name: Install vmware-tools.
+  yum: name=vmware-tools-esx-nox state=present
+  when: ansible_distribution_major_version|int <= 6
+
+# http://partnerweb.vmware.com/GOSIG/RHEL_7.html
+- name: Installing Open VMware Tools (open-vm-tools) for CentOS7/RHEL7 and higher.
+  yum: name=open-vm-tools state=installed
+  when: ansible_distribution_major_version|int >= 7
+
+- name: Start vmtoolsd for CentOS7/RHEL7 and higher.
+  service: name=vmtoolsd enabled=yes state=started
+  when: ansible_distribution_major_version|int >= 7
