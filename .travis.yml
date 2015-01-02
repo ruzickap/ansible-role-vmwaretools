@@ -29,3 +29,4 @@ script:
   # Show details
   - find /etc/vmware-tools  
   - dpkg -l *open-vm-tools* *vmware*
+  - cat /etc/os-release
