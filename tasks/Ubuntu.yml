@@ -8,7 +8,7 @@
   ignore_errors: true
 
 - name: Get repository package version if vmwaretools_repo_version is undefined.
-  shell: wget {{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/index.html -q -O - | sed -n "s/.*vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_\(.*\)\.{{ ansible_distribution_release }}_.*\.deb.*/\1/p"
+  shell: wget {{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/index.html -q -O - | sed -n "s/.*vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_\(.*\)\.{{ ansible_distribution_release }}_.*\.deb.*/\1/p" | uniq
   register: vmwaretools_repo_version2
   when: vmwaretools_repo_version is undefined
 
