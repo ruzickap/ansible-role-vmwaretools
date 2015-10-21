@@ -1,6 +1,16 @@
 ---
 # tasks file for vmwaretools/RedHat
 
+- name: Get repository package version if vmwaretools_repo_version is undefined.
+  shell: wget {{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/index.html -q -O - | sed -n "s/.*vmware-tools-repo-RHEL{{ ansible_distribution_major_version }}-\(.*\)\.el{{ ansible_distribution_major_version }}\.{{ ansible_architecture }}\.rpm.*/\1/p"
+  register: vmwaretools_repo_version2
+  when: vmwaretools_repo_version is undefined
+
+- name: Get details about repository package version if vmwaretools_repo_version is undefined.
+  set_fact:
+    vmwaretools_repo_version: "{{ vmwaretools_repo_version2.stdout }}"
+  when: vmwaretools_repo_version2 is defined and vmwaretools_repo_version is undefined
+
 - name: Install vmware-tools repository.
   yum: name={{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-RHEL{{ ansible_distribution_major_version }}-{{ vmwaretools_repo_version }}.el{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm state=present
   when: ansible_distribution_major_version|int <= 6
