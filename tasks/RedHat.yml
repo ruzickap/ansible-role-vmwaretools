@@ -17,7 +17,10 @@
   when: ansible_distribution_major_version|int <= 6
 
 - name: Install vmware-tools.
-  yum: name=vmware-tools-esx-nox state=present
+  yum: name={{ item }} state=present
+  with_items:
+    - vmware-tools-esx-nox
+    - vmware-tools-esx-kmods
   when: ansible_distribution_major_version|int <= 6
 
 - name: Install VMware Tools repository for CentOS7/RHEL7 and higher.
