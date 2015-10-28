@@ -12,7 +12,6 @@
     vmwaretools_repo_version: "{{ vmwaretools_repo_version2.stdout }}"
   when: vmwaretools_repo_version is undefined and not( vmwaretools_repo_version2.stdout is undefined or vmwaretools_repo_version2.stdout is none or vmwaretools_repo_version2.stdout | trim == '' )
 
-
 - name: Install vmware-tools repository.
   yum: name={{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-RHEL{{ ansible_distribution_major_version }}-{{ vmwaretools_repo_version }}.el{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm state=present
   when: ansible_distribution_major_version|int <= 6
@@ -21,9 +20,16 @@
   yum: name=vmware-tools-esx-nox state=present
   when: ansible_distribution_major_version|int <= 6
 
+- name: Install VMware Tools repository for CentOS7/RHEL7 and higher.
+  template: src=etc/yum.repos.d/vmware-tools.repo.j2 dest=/etc/yum.repos.d/vmware-tools.repo
+  when: ansible_distribution_major_version|int >= 7
+
 # http://partnerweb.vmware.com/GOSIG/RHEL_7.html
-- name: Installing Open VMware Tools (open-vm-tools) for CentOS7/RHEL7 and higher.
-  yum: name=open-vm-tools state=installed
+- name: Installing Open VMware Tools (open-vm-tools and open-vm-tools-deploypkg) for CentOS7/RHEL7 and higher.
+  yum: name={{ item }} state=installed
+  with_items:
+    - open-vm-tools
+    - open-vm-tools-deploypkg
   when: ansible_distribution_major_version|int >= 7
 
 - name: Start vmtoolsd for CentOS7/RHEL7 and higher.
