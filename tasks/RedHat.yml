@@ -23,19 +23,24 @@
     - vmware-tools-esx-kmods
   when: ansible_distribution_major_version|int <= 6
 
-- name: Install VMware Tools repository for CentOS7/RHEL7 and higher.
+- name: Install VMware Tools repository for CentOS/RHEL 7 and higher.
   template: src=etc/yum.repos.d/vmware-tools.repo.j2 dest=/etc/yum.repos.d/vmware-tools.repo
   when: ansible_distribution_major_version|int >= 7
 
 # http://partnerweb.vmware.com/GOSIG/RHEL_7.html
-- name: Installing Open VMware Tools (open-vm-tools and open-vm-tools-deploypkg) for CentOS7/RHEL7 and higher.
+- name: Installing Open VMware Tools (open-vm-tools and open-vm-tools-deploypkg) for CentOS/RHEL 7 and higher.
   yum: name={{ item }} state=installed
   with_items:
     - open-vm-tools
     - open-vm-tools-deploypkg
   when: ansible_distribution_major_version|int >= 7
 
-- name: Start vmtoolsd and enable vmtoolsd to start during boot for CentOS7/RHEL7 and higher.
+- name: Start vmtoolsd and enable vmtoolsd to start during boot for CentOS/RHEL 7 and higher.
   service: name=vmtoolsd state=started enabled=yes
   failed_when: false
   when: ansible_distribution_major_version|int >= 7
+
+- name: Start and enable vmware-tools-services during boot for CentOS/RHEL 6 and higher.
+  service: name=vmware-tools-services state=started enabled=yes
+  failed_when: false
+  when: ansible_distribution_major_version|int <= 6
