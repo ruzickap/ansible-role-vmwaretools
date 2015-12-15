@@ -13,9 +13,6 @@ vmwaretools_yum_server: http://packages.vmware.com
 #   this if you mirror public YUM repos to your internal network.
 vmwaretools_yum_path: /tools
 
-#   vmware-tools repository for CentOS/RHEL 7
-vmware_tools_base_baseurl_7: http://packages.vmware.com/packages/rhel{{ ansible_distribution_major_version }}/{{ ansible_architecture }}/
-
 #   Repository package version
 #   For example: 9.4.10-1 version for http://packages.vmware.com/tools/esx/latest/repos/vmware-tools-repo-RHEL6-9.4.10-1.el6.x86_64.rpm
 #   If it is not specified it's autodetected by "Get repository package version if vmwaretools_repo_version is undefined." task.
