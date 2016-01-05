@@ -12,3 +12,6 @@
 
 - include: Suse.yml
   when: ansible_os_family == 'Suse'
+
+- include: FreeBSD.yml
+  when: ansible_os_family == 'FreeBSD'
