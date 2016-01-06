@@ -22,6 +22,8 @@ galaxy_info:
   - name: Debian
     versions:
     - all
+  - name: FreeBSD
+    - all
   categories:
   - cloud
   - system
