@@ -23,6 +23,7 @@ galaxy_info:
     versions:
     - all
   - name: FreeBSD
+    versions:
     - all
   categories:
   - cloud
