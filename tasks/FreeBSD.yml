@@ -2,4 +2,4 @@
 # tasks file for vmwaretools/Debian
 
 - name: Installing Open VMware Tools (open-vm-tools).
-  pkg: name=open-vm-tools state=installed
+  pkgng: name=open-vm-tools state=present
