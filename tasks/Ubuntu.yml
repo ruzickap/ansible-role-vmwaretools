@@ -38,6 +38,10 @@
   apt_key: url={{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub state=present
   when: ansible_distribution_release in {{ [ 'lucid', 'natty', 'oneiric', 'precise' ] }} and dpkg_result.stdout.find('no packages found') == -1
 
+- name: Remove the open-vm-tools if they are installed not to block vmware-tools installation
+  apt: name=open-vm-tools state=absent
+  when: ansible_distribution_release in {{ [ 'lucid', 'natty', 'oneiric', 'precise' ] }} and dpkg_result.stdout.find('no packages found') == -1
+
 - name: Install vmware-tools
   apt: name=vmware-tools-esx-nox state=present update_cache=yes
   when: ansible_distribution_release in {{ [ 'lucid', 'natty', 'oneiric', 'precise' ] }} and dpkg_result.stdout.find('no packages found') == -1
