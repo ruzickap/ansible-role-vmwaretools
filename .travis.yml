@@ -2,30 +2,28 @@
 language: python
 python: "2.7"
 
-before_install:
-  - sudo apt-get update -qq
+# Use the new container infrastructure
+sudo: false
+
+# Install ansible
+addons:
+  apt:
+    packages:
+    - python-pip
 
 install:
-  # Install Ansible.
+  # Install ansible
   - pip install ansible
 
-  # Add ansible.cfg to pick up roles path.
-  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+  # Check ansible version
+  - ansible --version
 
+  # Create ansible.cfg with correct roles_path
+  - printf '[defaults]\nroles_path=../' >ansible.cfg
 
 script:
-  # Check the role/playbook's syntax.
-  - "ansible-playbook -i tests/inventory tests/test.yml --syntax-check"
+  # Basic role syntax check
+  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
 
-  # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -vvv -i tests/inventory tests/test.yml --connection=local --sudo"
-
-  # Run the role/playbook again, checking to make sure it's idempotent.
-  - >
-    ansible-playbook -vvv -i tests/inventory tests/test.yml --connection=local --sudo
-    | grep -q 'unreachable=0.*failed=0'
-    && (echo '*** Idempotence test: pass' && exit 0)
-    || (echo '*** Idempotence test: fail' && exit 1)
-  # Show details
-  - find /etc/vmware-tools
-  - dpkg -l *open-vm-toolsxx* || dpkg -l *vmware*
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

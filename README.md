@@ -19,7 +19,7 @@ Available variables are listed below, along with default values (see `defaults/m
 
     #The server which holds the YUM repository. Customize this if you mirror public YUM repos to your internal network.
 
-    vmwaretools_yum_server: http://packages.vmware.com
+    vmwaretools_yum_server: https://packages.vmware.com
 
     #The path on *yum_server* where the repository can be found. Customize this if you mirror public YUM repos to your internal network.
  
