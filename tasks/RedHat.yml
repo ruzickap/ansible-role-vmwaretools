@@ -18,6 +18,7 @@
 
 - name: Remove the open-vm-tools if they are installed not to block vmware-tools installation
   yum: name=open-vm-tools state=absent
+  when: ansible_distribution_major_version|int <= 6
 
 - name: Install vmware-tools.
   yum: name={{ item }} state=present
