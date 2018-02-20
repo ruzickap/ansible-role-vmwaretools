@@ -1,17 +1,17 @@
 ---
 # tasks file for vmwaretools
 
-- include: RedHat.yml
+- import_tasks: RedHat.yml
   when: ansible_os_family == 'RedHat'
 
-- include: Ubuntu.yml
+- import_tasks: Ubuntu.yml
   when: ansible_distribution == 'Ubuntu'
 
-- include: Debian.yml
+- import_tasks: Debian.yml
   when: ansible_distribution == 'Debian'
 
-- include: Suse.yml
+- import_tasks: Suse.yml
   when: ansible_os_family == 'Suse'
 
-- include: FreeBSD.yml
+- import_tasks: FreeBSD.yml
   when: ansible_os_family == 'FreeBSD'
