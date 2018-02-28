@@ -36,6 +36,7 @@ None.
 ## Example Playbook
 
     - hosts: servers
+      become: yes
       roles:
          - { role: peru.vmwaretools, when: ansible_virtualization_type == 'VMware' }
 

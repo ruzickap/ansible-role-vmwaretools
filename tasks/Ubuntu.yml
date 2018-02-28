@@ -7,12 +7,12 @@
   changed_when: false
   ignore_errors: true
 
-- name: Get repository package version if vmwaretools_repo_version is undefined.
-  shell: wget {{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/index.html -q -O - | sed -n "s/.*vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_\(.*\)\.{{ ansible_distribution_release }}_.*\.deb.*/\1/p" | uniq
+- name: Get repository package version if vmwaretools_repo_version is undefined
+  shell: curl {{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/index.html | sed -n "s/.*vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_\(.*\)\.{{ ansible_distribution_release }}_.*\.deb.*/\1/p" | uniq
   register: vmwaretools_repo_version2
   when: vmwaretools_repo_version is undefined
 
-- name: Get details about repository package version if vmwaretools_repo_version is undefined.
+- name: Get details about repository package version if vmwaretools_repo_version is undefined
   set_fact:
     vmwaretools_repo_version: "{{ vmwaretools_repo_version2.stdout }}"
   when: vmwaretools_repo_version2 is defined and vmwaretools_repo_version is undefined
@@ -20,32 +20,32 @@
 #This needs to be separated because of differencies in repository names vs. architecture: x86_64 != amd64
 - name: Download vmware-tools repository file for x86_64/amd64 to /tmp
   get_url: url={{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_{{ vmwaretools_repo_version }}.{{ ansible_distribution_release }}_amd64.deb dest=/tmp/vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_{{ vmwaretools_repo_version }}.{{ ansible_distribution_release }}.deb mode=0644
-  when: ansible_architecture == 'x86_64' and ansible_distribution_release in {{ [ 'lucid', 'natty', 'oneiric', 'precise' ] }} and dpkg_result.stdout.find('no packages found') == -1
+  when: ansible_architecture == 'x86_64' and ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ] and dpkg_result.stdout.find('no packages found') == -1
 
 - name: Download vmware-tools repository file for i386 to /tmp
   get_url: url={{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_{{ vmwaretools_repo_version }}.{{ ansible_distribution_release }}_{{ ansible_architecture }}.deb dest=/tmp/vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_{{ vmwaretools_repo_version }}.{{ ansible_distribution_release }}.deb mode=0644
-  when: ansible_architecture == 'i386' and ansible_distribution_release in {{ [ 'lucid', 'natty', 'oneiric', 'precise' ] }} and dpkg_result.stdout.find('no packages found') == -1
+  when: ansible_architecture == 'i386' and ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ] and dpkg_result.stdout.find('no packages found') == -1
 
 - name: Install vmware-tools repository file
   apt: deb=/tmp/vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_{{ vmwaretools_repo_version }}.{{ ansible_distribution_release }}.deb
-  when: ansible_distribution_release in {{ [ 'lucid', 'natty', 'oneiric', 'precise' ] }} and dpkg_result.stdout.find('no packages found') == -1
+  when: ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ] and dpkg_result.stdout.find('no packages found') == -1
 
 - name: Delete vmware-tools repository file from /tmp
   file: path=/tmp/vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_{{ vmwaretools_repo_version }}.{{ ansible_distribution_release }}.deb state=absent
-  when: ansible_distribution_release in {{ [ 'lucid', 'natty', 'oneiric', 'precise' ] }} and dpkg_result.stdout.find('no packages found') == -1
+  when: ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ] and dpkg_result.stdout.find('no packages found') == -1
 
 - name: Add vmware-tools repository key
-  apt_key: url={{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub state=present
-  when: ansible_distribution_release in {{ [ 'lucid', 'natty', 'oneiric', 'precise' ] }} and dpkg_result.stdout.find('no packages found') == -1
+  apt_key: url={{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub
+  when: ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ] and dpkg_result.stdout.find('no packages found') == -1
 
 - name: Remove the open-vm-tools if they are installed not to block vmware-tools installation
   apt: name=open-vm-tools state=absent
-  when: ansible_distribution_release in {{ [ 'lucid', 'natty', 'oneiric', 'precise' ] }} and dpkg_result.stdout.find('no packages found') == -1
+  when: ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ] and dpkg_result.stdout.find('no packages found') == -1
 
 - name: Install vmware-tools
-  apt: name=vmware-tools-esx-nox state=present update_cache=yes
-  when: ansible_distribution_release in {{ [ 'lucid', 'natty', 'oneiric', 'precise' ] }} and dpkg_result.stdout.find('no packages found') == -1
+  apt: name=vmware-tools-esx-nox update_cache=yes
+  when: ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ] and dpkg_result.stdout.find('no packages found') == -1
 
 - name: Installing Open VMware Tools (open-vm-tools) for non 'lucid', 'natty', 'oneiric', 'precise' Ubuntu systems
-  apt: name=open-vm-tools state=present
-  when: not ansible_distribution_release in {{ [ 'lucid', 'natty', 'oneiric', 'precise' ] }}
+  apt: name=open-vm-tools
+  when: not ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ]
