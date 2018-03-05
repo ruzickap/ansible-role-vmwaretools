@@ -1,7 +1,8 @@
 # Ansible Role: vmwaretools
 
-[![Build Status](https://travis-ci.org/ruzickap/ansible-role-vmwaretools.svg?branch=master)](https://travis-ci.org/ruzickap/ansible-role-vmwaretools) [![Ansible Galaxy](http://img.shields.io/badge/galaxy-peru.vmwaretools-660198.svg)](https://galaxy.ansible.com/list#/roles/2509)
-
+[![Build Status](https://travis-ci.org/ruzickap/ansible-role-vmwaretools.svg?branch=master)](https://travis-ci.org/ruzickap/ansible-role-vmwaretools)
+[![Ansible Galaxy](https://img.shields.io/ansible/role/2509.svg)](https://galaxy.ansible.com/peru/vmwaretools/)
+[![Ansible Role](https://img.shields.io/ansible/role/d/2509.svg)](https://galaxy.ansible.com/peru/vmwaretools/)
 
 This role will help you with installing original vmware-tools from Vmware or fallback to Open VMware Tools (open-vm-tools).
 
