@@ -35,7 +35,7 @@
 - name: Install vmware-tools
   yum:
     name: "{{ item }}"
-  loop:
+  with_items:
     - vmware-tools-esx-nox
     - vmware-tools-esx-kmods
   when: ansible_distribution_major_version|int <= 6
