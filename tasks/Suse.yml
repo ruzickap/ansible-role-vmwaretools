@@ -19,7 +19,8 @@
 
 - name: Remove the open-vm-tools if they are installed not to block vmware-tools installation
   zypper:
-    name: open-vm-tools state=absent
+    name: open-vm-tools
+    state: absent
   when: ansible_distribution_major_version|int == 11
 
 - name: Install vmware-tools
