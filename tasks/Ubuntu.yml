@@ -27,7 +27,8 @@
 
 - name: Download vmware-tools repository file for i386 to /tmp
   get_url:
-    url: "{{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_{{ vmwaretools_repo_version }}.{{ ansible_distribution_release }}_{{ ansible_architecture }}.deb dest=/tmp/vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_{{ vmwaretools_repo_version }}.{{ ansible_distribution_release }}.deb"
+    url: "{{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_{{ vmwaretools_repo_version }}.{{ ansible_distribution_release }}_{{ ansible_architecture }}.deb"
+    dest: /tmp/vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_{{ vmwaretools_repo_version }}.{{ ansible_distribution_release }}.deb
   when: ansible_architecture == 'i386' and ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ] and dpkg_result.stdout.find('no packages found') == -1
 
 - name: Install vmware-tools repository file
