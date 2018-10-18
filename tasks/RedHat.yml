@@ -44,21 +44,19 @@
 - name: Installing Open VMware Tools (open-vm-tools) for CentOS/RHEL 7 and higher
   yum:
     name: open-vm-tools
-    state: installed
   when: ansible_distribution_major_version|int >= 7
 
+# vmtoolsd needs to be started on VMware enabled VM, otherwise it will fail to start which breaks idempotency tests
 - name: Start vmtoolsd and enable vmtoolsd to start during boot for CentOS/RHEL 7 and higher
   service:
     name: vmtoolsd
     state: started
     enabled: yes
-  failed_when: false
-  when: ansible_distribution_major_version|int >= 7
+  when: ansible_distribution_major_version|int >= 7 and ansible_virtualization_type == 'VMware'
 
 - name: Start and enable vmware-tools-services during boot for CentOS/RHEL 6 and higher
   service:
     name: vmware-tools-services
     state: started
     enabled: yes
-  failed_when: false
   when: ansible_distribution_major_version|int <= 6
