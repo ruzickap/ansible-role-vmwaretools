@@ -1,6 +1,6 @@
 # Ansible Role: vmwaretools
 
-[![Build Status](https://travis-ci.org/ruzickap/ansible-role-vmwaretools.svg?branch=master)](https://travis-ci.org/ruzickap/ansible-role-vmwaretools)
+[![Build Status](https://travis-ci.com/ruzickap/ansible-role-vmwaretools.svg?branch=master)](https://travis-ci.com/ruzickap/ansible-role-vmwaretools)
 
 This role will help you with installing original vmware-tools from Vmware or fallback to Open VMware Tools (open-vm-tools).
 
