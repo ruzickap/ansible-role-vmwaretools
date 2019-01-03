@@ -34,6 +34,8 @@
 - name: Install vmware-tools repository file
   apt:
     deb: /tmp/vmware-tools-repo-ubuntu{{ ansible_distribution_version }}_{{ vmwaretools_repo_version }}.{{ ansible_distribution_release }}.deb
+  register: result
+  until: result is succeeded
   when: ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ] and dpkg_result.stdout.find('no packages found') == -1
 
 - name: Delete vmware-tools repository file from /tmp
@@ -45,6 +47,8 @@
 - name: Add vmware-tools repository key
   apt_key:
     url: "{{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub"
+  register: result
+  until: result is succeeded
   when: ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ] and dpkg_result.stdout.find('no packages found') == -1
 
 - name: Remove the open-vm-tools if they are installed not to block vmware-tools installation
@@ -57,9 +61,13 @@
   apt:
     name: vmware-tools-esx-nox
     update_cache: yes
+  register: result
+  until: result is succeeded
   when: ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ] and dpkg_result.stdout.find('no packages found') == -1
 
 - name: Installing Open VMware Tools (open-vm-tools) for non 'lucid', 'natty', 'oneiric', 'precise' Ubuntu systems
   apt:
     name: open-vm-tools
+  register: result
+  until: result is succeeded
   when: not ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ]
