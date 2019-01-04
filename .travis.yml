@@ -4,6 +4,7 @@ services: docker
 
 env:
   matrix:
+    - MOLECULE_DISTRO: centos6
     - MOLECULE_DISTRO: centos7
       MOLECULE_DOCKER_COMMAND: /usr/lib/systemd/systemd
     - MOLECULE_DISTRO: debian9

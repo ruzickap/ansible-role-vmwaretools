@@ -1,36 +1,39 @@
 ---
 # tasks file for vmwaretools/Suse
 
-- name: Get repository package version if vmwaretools_repo_version is undefined
-  shell: curl {{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/index.html | sed -n "s/.*vmware-tools-repo-SLES{{ ansible_distribution_major_version }}-\(.*\)\.sles{{ ansible_distribution_major_version }}\.{{ ansible_architecture }}\.rpm.*/\1/p"
-  changed_when: false
-  register: vmwaretools_repo_version2
-  when: vmwaretools_repo_version is undefined
+- name: For SUSE <= 6
+  block:
+    - name: Get the page wgere I can get the latest vmware package version if not predefined in vmwaretools_repo_version
+      uri:
+        url: "{{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/index.html"
+        return_content: yes
+      changed_when: false
+      register: vmwaretools_web_page
 
-- name: Get details about repository package version if vmwaretools_repo_version is undefined
-  set_fact:
-    vmwaretools_repo_version: "{{ vmwaretools_repo_version2.stdout }}"
-  when: vmwaretools_repo_version2 is defined and vmwaretools_repo_version is undefined
+    - name: Get details about repository package version if vmwaretools_repo_version is undefined
+      set_fact:
+        vmwaretools_repo_version: "{{ vmwaretools_web_page.content | regex_findall('vmware-tools-repo-SLES' + ansible_distribution_major_version|string + '-(.*).sles' + ansible_distribution_major_version|string + '.' + ansible_architecture + '.rpm') | first | string }}"
+  when: vmwaretools_repo_version is undefined and ansible_distribution_major_version|int <= 6
 
-- name: Install vmware-tools repository for SLES 11
-  zypper:
-    name: "{{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-SLES{{ ansible_distribution_major_version }}.{{ ansible_distribution_release }}-{{ vmwaretools_repo_version }}.sles{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
-  register: result
-  until: result is succeeded
-  when: ansible_distribution_major_version|int == 11
+- name: For SUSE == 11
+  block:
+    - name: Install vmware-tools repository for SLES 11
+      zypper:
+        name: "{{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-SLES{{ ansible_distribution_major_version }}.{{ ansible_distribution_release }}-{{ vmwaretools_repo_version }}.sles{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
+      register: result
+      until: result is succeeded
 
-- name: Remove the open-vm-tools if they are installed not to block vmware-tools installation
-  zypper:
-    name: open-vm-tools
-    state: absent
-  when: ansible_distribution_major_version|int == 11
+    - name: Remove the open-vm-tools if they are installed not to block vmware-tools installation
+      zypper:
+        name: open-vm-tools
+        state: absent
 
-- name: Install vmware-tools
-  zypper:
-    name: vmware-tools-esx
-    disable_gpg_check: yes
-  register: result
-  until: result is succeeded
+    - name: Install vmware-tools
+      zypper:
+        name: vmware-tools-esx
+        disable_gpg_check: yes
+      register: result
+      until: result is succeeded
   when: ansible_distribution_major_version|int == 11
 
 - name: Installing Open VMware Tools (open-vm-tools) for SLES12 and higher or OpenSuse
@@ -38,4 +41,4 @@
     name: open-vm-tools
   register: result
   until: result is succeeded
-  when: ansible_distribution_major_version|int != 11
+  when: ansible_distribution_major_version|int >= 12

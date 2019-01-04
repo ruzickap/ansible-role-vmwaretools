@@ -1,68 +1,70 @@
 ---
 # tasks file for vmwaretools/RedHat
 
-- name: Get repository package version if vmwaretools_repo_version is undefined
-  shell: curl {{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/index.html | sed -n "s/.*vmware-tools-repo-RHEL{{ ansible_distribution_major_version }}-\(.*\)\.el{{ ansible_distribution_major_version }}\.{{ ansible_architecture }}\.rpm.*/\1/p"
-  register: vmwaretools_repo_version2
-  when: vmwaretools_repo_version is undefined and ansible_distribution_major_version|int <= 6
-  changed_when: false
+- name: Olny for RHEL/CentOS <= 6
+  block:
+    - name: Get the page wgere I can get the latest vmware package version if not predefined in vmwaretools_repo_version
+      uri:
+        url: "{{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/index.html"
+        return_content: yes
+      changed_when: false
+      register: vmwaretools_web_page
+      when: vmwaretools_repo_version is undefined
 
-- name: Get details about repository package version if vmwaretools_repo_version is undefined
-  set_fact:
-    vmwaretools_repo_version: "{{ vmwaretools_repo_version2.stdout }}"
-  when: vmwaretools_repo_version is undefined and not( vmwaretools_repo_version2.stdout is undefined or vmwaretools_repo_version2.stdout is none or vmwaretools_repo_version2.stdout | trim == '' )
+    - name: Get details about repository package version if vmwaretools_repo_version is undefined
+      set_fact:
+        vmwaretools_repo_version: "{{ vmwaretools_web_page.content | regex_findall('vmware-tools-repo-RHEL' + ansible_distribution_major_version|string + '-(.*).el' + ansible_distribution_major_version|string + '.' + ansible_architecture + '.rpm') | first | string }}"
+      when: vmwaretools_repo_version is undefined
 
-- name: Install vmware-tools repository
-  yum:
-    name: "{{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-RHEL{{ ansible_distribution_major_version }}-{{ vmwaretools_repo_version }}.el{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
-  register: result
-  until: result is succeeded
-  when: ansible_distribution_major_version|int <= 6
+    - name: Install vmware-tools repository
+      yum:
+        name: "{{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-RHEL{{ ansible_distribution_major_version }}-{{ vmwaretools_repo_version }}.el{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
+      register: result
+      until: result is succeeded
 
-- name: Disable GPG check for vmware-osps repository
-  ini_file:
-    path: /etc/yum.repos.d/vmware-osps.repo
-    section: vmware-tools-collection
-    option: repo_gpgcheck
-    value: 0
-    backup: yes
-  when: ansible_distribution_major_version|int <= 6
+    - name: Disable GPG check for vmware-osps repository
+      ini_file:
+        path: /etc/yum.repos.d/vmware-osps.repo
+        section: vmware-tools-collection
+        option: repo_gpgcheck
+        value: 0
+        backup: yes
 
-- name: Remove the open-vm-tools if they are installed not to block vmware-tools installation
-  yum:
-    name: open-vm-tools
-    state: absent
-  when: ansible_distribution_major_version|int <= 6
+    - name: Remove the open-vm-tools if they are installed not to block vmware-tools installation
+      yum:
+        name: open-vm-tools
+        state: absent
 
-- name: Install vmware-tools
-  yum:
-    name: "{{ item }}"
-  with_items:
-    - vmware-tools-esx-nox
-    - vmware-tools-esx-kmods
-  register: result
-  until: result is succeeded
-  when: ansible_distribution_major_version|int <= 6
+    - name: Install vmware-tools
+      yum:
+        name: "{{ item }}"
+      with_items:
+        - vmware-tools-esx-nox
+        - vmware-tools-esx-kmods
+      register: result
+      until: result is succeeded
 
-# http://partnerweb.vmware.com/GOSIG/RHEL_7.html
-- name: Installing Open VMware Tools (open-vm-tools) for CentOS/RHEL 7 and higher
-  yum:
-    name: open-vm-tools
-  register: result
-  until: result is succeeded
+    - name: Start and enable vmware-tools-services during boot for CentOS/RHEL 6 and higher
+      service:
+        name: vmware-tools-services
+        state: started
+        enabled: yes
+  when: ansible_distribution_major_version|int <= 6 and ansible_virtualization_type == 'VMware'
+
+- name: Olny for RHEL/CentOS >= 7
+  block:
+    # http://partnerweb.vmware.com/GOSIG/RHEL_7.html
+    - name: Installing Open VMware Tools (open-vm-tools) for CentOS/RHEL 7 and higher
+      yum:
+        name: open-vm-tools
+      register: result
+      until: result is succeeded
+
+    # vmtoolsd needs to be started on VMware enabled VM, otherwise it will fail to start which breaks idempotency tests
+    - name: Start vmtoolsd and enable vmtoolsd to start during boot for CentOS/RHEL 7 and higher
+      service:
+        name: vmtoolsd
+        state: started
+        enabled: yes
+      when: ansible_virtualization_type == 'VMware'
   when: ansible_distribution_major_version|int >= 7
-
-# vmtoolsd needs to be started on VMware enabled VM, otherwise it will fail to start which breaks idempotency tests
-- name: Start vmtoolsd and enable vmtoolsd to start during boot for CentOS/RHEL 7 and higher
-  service:
-    name: vmtoolsd
-    state: started
-    enabled: yes
-  when: ansible_distribution_major_version|int >= 7 and ansible_virtualization_type == 'VMware'
-
-- name: Start and enable vmware-tools-services during boot for CentOS/RHEL 6 and higher
-  service:
-    name: vmware-tools-services
-    state: started
-    enabled: yes
-  when: ansible_distribution_major_version|int <= 6
