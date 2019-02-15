@@ -15,16 +15,19 @@ Available variables are listed below, along with default values
 (see `defaults/main.yml`):
 
 ```yaml
-#The version of VMware Tools to install. Possible values can be found here: http://packages.vmware.com/tools/esx/index.html
+# The version of VMware Tools to install. Possible values can be found here: http://packages.vmware.com/tools/esx/index.html
 vmwaretools_tools_version: latest
 
-#The server which holds the YUM repository. Customize this if you mirror public YUM repos to your internal network.
+# The server which holds the YUM repository. Customize this if you mirror public
+# YUM repos to your internal network.
 vmwaretools_yum_server: https://packages.vmware.com
 
-#The path on *yum_server* where the repository can be found. Customize this if you mirror public YUM repos to your internal network.
+# The path on *yum_server* where the repository can be found. Customize this if
+# you mirror public YUM repos to your internal network.
 vmwaretools_yum_path: /tools
 
-#Repository package version. For example: 9.4.10-1 version for http://packages.vmware.com/tools/esx/latest/repos/vmware-tools-repo-RHEL6-9.4.10-1.el6.x86_64.rpm
+# Repository package version. For example: 9.4.10-1 version for
+# http://packages.vmware.com/tools/esx/latest/repos/vmware-tools-repo-RHEL6-9.4.10-1.el6.x86_64.rpm
 vmwaretools_repo_version: 9.4.10-1
 ```
 
@@ -38,7 +41,8 @@ None.
 - hosts: servers
   become: yes
   roles:
-      - { role: ruzickap.vmwaretools, when: ansible_virtualization_type == 'VMware' }
+    - role: ruzickap.vmwaretools
+      when: ansible_virtualization_type == 'VMware'
 ```
 
 ## License
