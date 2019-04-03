@@ -1,7 +1,7 @@
 ---
 # tasks file for vmwaretools/Suse
 
-- name: For SUSE <= 6
+- name: For SUSE <= 11
   block:
     - name: Get the page wgere I can get the latest vmware package version if not predefined in vmwaretools_repo_version
       uri:
@@ -12,14 +12,14 @@
 
     - name: Get details about repository package version if vmwaretools_repo_version is undefined
       set_fact:
-        vmwaretools_repo_version: "{{ vmwaretools_web_page.content | regex_findall('vmware-tools-repo-SLES' + ansible_distribution_major_version|string + '-(.*).sles' + ansible_distribution_major_version|string + '.' + ansible_architecture + '.rpm') | first | string }}"
-  when: vmwaretools_repo_version is undefined and ansible_distribution_major_version|int <= 6
+        vmwaretools_repo_version: "{{ vmwaretools_web_page.content | regex_findall('vmware-tools-repo-SLES' + ansible_distribution_version|string + '.(.*).sles' + ansible_distribution_major_version|string + '.' + ansible_architecture + '.rpm') | first | string }}"
+  when: vmwaretools_repo_version is undefined and ansible_distribution_major_version|int <= 11
 
 - name: For SUSE == 11
   block:
     - name: Install vmware-tools repository for SLES 11
       zypper:
-        name: "{{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-SLES{{ ansible_distribution_major_version }}.{{ ansible_distribution_release }}-{{ vmwaretools_repo_version }}.sles{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
+        name: "{{ vmwaretools_yum_server }}{{ vmwaretools_yum_path }}/esx/{{ vmwaretools_tools_version }}/repos/vmware-tools-repo-SLES{{ ansible_distribution_version }}-{{ vmwaretools_repo_version }}.sles{{ ansible_distribution_major_version }}.{{ ansible_architecture }}.rpm"
       register: result
       until: result is succeeded
 
