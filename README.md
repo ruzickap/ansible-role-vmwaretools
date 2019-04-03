@@ -26,9 +26,10 @@ vmwaretools_yum_server: https://packages.vmware.com
 # you mirror public YUM repos to your internal network.
 vmwaretools_yum_path: /tools
 
-# Repository package version. For example: 9.4.10-1 version for
-# http://packages.vmware.com/tools/esx/latest/repos/vmware-tools-repo-RHEL6-9.4.10-1.el6.x86_64.rpm
-vmwaretools_repo_version: 9.4.10-1
+# Repository package version
+# For example: 9.4.10-1 version for http://packages.vmware.com/tools/esx/latest/repos/vmware-tools-repo-RHEL6-9.4.10-1.el6.x86_64.rpm
+# If it is not specified it's autodetected by "Get repository package version if vmwaretools_repo_version is undefined." task.
+# vmwaretools_repo_version: 9.4.10-1
 ```
 
 ## Dependencies
