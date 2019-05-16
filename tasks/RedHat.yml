@@ -1,7 +1,7 @@
 ---
 # tasks file for vmwaretools/RedHat
 
-- name: Olny for RHEL/CentOS <= 6
+- name: Only for RHEL/CentOS <= 6
   block:
     - name: Get the page wgere I can get the latest vmware package version if not predefined in vmwaretools_repo_version
       uri:
@@ -51,7 +51,7 @@
         enabled: yes
   when: ansible_distribution_major_version|int <= 6 and ansible_virtualization_type == 'VMware'
 
-- name: Olny for RHEL/CentOS >= 7
+- name: Only for RHEL/CentOS >= 7
   block:
     # http://partnerweb.vmware.com/GOSIG/RHEL_7.html
     - name: Installing Open VMware Tools (open-vm-tools) for CentOS/RHEL 7 and higher
