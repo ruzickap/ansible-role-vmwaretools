@@ -37,8 +37,7 @@
 
     - name: Install vmware-tools
       yum:
-        name: "{{ item }}"
-      loop:
+        name:
         - vmware-tools-esx-nox
         - vmware-tools-esx-kmods
       register: result
