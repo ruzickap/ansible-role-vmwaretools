@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.1.0](https://github.com/ruzickap/ansible-role-vmwaretools/compare/v0.0.1...v0.1.0) (2020-09-17)
+
+- Replace markdown link checker by action-my-markdown-link-checker [`#19`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/19)
+- Replace markdown linter [`#18`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/18)
+- Upgrade shellcheck to latest version [`#17`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/17)
+- Add colours to molecule and ansible [`#16`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/16)
+- CHANGELOG file update [`#15`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/15)
+
 ## v0.0.1 (2020-05-09)
 
 - Fix [DEPRECATION WARNING] [`#13`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/13)
@@ -57,7 +65,6 @@
 - README update [`8cbdab4`](https://github.com/ruzickap/ansible-role-vmwaretools/commit/8cbdab4c0a37c2d4cc82573ce731a30c7cfb2d7c)
 - CentOS/RHEL 6 fix [`ab0c137`](https://github.com/ruzickap/ansible-role-vmwaretools/commit/ab0c1376b7cdf3e8edf69633711544da7fb89396)
 -  Fix [DEPRECATION WARNING] [`3aff991`](https://github.com/ruzickap/ansible-role-vmwaretools/commit/3aff99159f8bfca73c07ff7ea9f3eff0fcb74119)
-- Remove the open-vm-tools only for RedHat &lt;= 6 [`0a52b63`](https://github.com/ruzickap/ansible-role-vmwaretools/commit/0a52b63c2798dcb627d0ebc236fb0ddd0f15b77b)
 - Replaced http by https [`e33232d`](https://github.com/ruzickap/ansible-role-vmwaretools/commit/e33232dc9a50132bb3820efe84e2e3279226621c)
 - Added task removing the open-vm-tools before installing vmware-tools - this should prevent errors when installing vmware-tools to system with open-vm-tools already installed. [`24e6a00`](https://github.com/ruzickap/ansible-role-vmwaretools/commit/24e6a00009fe0fe56efe1e9fbd47088f0839704f)
 - Update Readme.md [`4f36a1b`](https://github.com/ruzickap/ansible-role-vmwaretools/commit/4f36a1b57454a5be06e8ae238f867722b9589040)
