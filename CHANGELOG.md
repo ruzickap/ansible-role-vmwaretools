@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.1.1](https://github.com/ruzickap/ansible-role-vmwaretools/compare/v0.1.0...v0.1.1) (2020-11-19)
+
+- Fix CICD [`#21`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/21)
+- CHANGELOG file update [`#20`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/20)
+
 ## [v0.1.0](https://github.com/ruzickap/ansible-role-vmwaretools/compare/v0.0.1...v0.1.0) (2020-09-17)
 
 - Replace markdown link checker by action-my-markdown-link-checker [`#19`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/19)
