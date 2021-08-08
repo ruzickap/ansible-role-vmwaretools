@@ -1,9 +1,14 @@
 # Changelog
 
+## [v0.1.2](https://github.com/ruzickap/ansible-role-vmwaretools/compare/v0.1.1...v0.1.2) (2021-08-08)
+
+- Fix linting issues [`#25`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/25)
+- Upgrade GH Actions versions [`#24`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/24)
+- Fix tests [`#23`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/23)
+
 ## [v0.1.1](https://github.com/ruzickap/ansible-role-vmwaretools/compare/v0.1.0...v0.1.1) (2020-11-19)
 
 - Fix CICD [`#21`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/21)
-- CHANGELOG file update [`#20`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/20)
 
 ## [v0.1.0](https://github.com/ruzickap/ansible-role-vmwaretools/compare/v0.0.1...v0.1.0) (2020-09-17)
 
@@ -11,7 +16,6 @@
 - Replace markdown linter [`#18`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/18)
 - Upgrade shellcheck to latest version [`#17`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/17)
 - Add colours to molecule and ansible [`#16`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/16)
-- CHANGELOG file update [`#15`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/15)
 
 ## v0.0.1 (2020-05-09)
 
