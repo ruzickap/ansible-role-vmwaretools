@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.2.0](https://github.com/ruzickap/ansible-role-vmwaretools/compare/v0.1.2...v0.2.0) (2021-08-15)
+
+- Replace ini_file by community.general.ini_file [`#28`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/28)
+
 ## [v0.1.2](https://github.com/ruzickap/ansible-role-vmwaretools/compare/v0.1.1...v0.1.2) (2021-08-08)
 
 - Fix linting issues [`#25`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/25)
