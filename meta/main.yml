@@ -1,5 +1,7 @@
 ---
 galaxy_info:
+  namespace: ruzickap
+  role_name: vmwaretools
   author: Petr Ruzicka
   description: Installation of vmware-tools package and repostory
 
