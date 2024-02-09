@@ -13,6 +13,10 @@
     - name: Get details about repository package version if vmwaretools_repo_version is undefined
       set_fact:
         vmwaretools_repo_version: "{{ vmwaretools_web_page.content | regex_findall('vmware-tools-repo-SLES' + ansible_distribution_version|string + '.(.*).sles' + ansible_distribution_major_version|string + '.' + ansible_architecture + '.rpm') | first | string }}"
+  rescue:
+    - name: Print when errors
+      ansible.builtin.debug:
+        msg: "I caught an error..."
   when: vmwaretools_repo_version is undefined and ansible_distribution_major_version|int <= 11
 
 - name: For SUSE == 11
@@ -34,6 +38,10 @@
         disable_gpg_check: yes
       register: result
       until: result is succeeded
+  rescue:
+    - name: Print when errors
+      ansible.builtin.debug:
+        msg: "I caught an error..."
   when: ansible_distribution_major_version|int == 11
 
 - name: Installing Open VMware Tools (open-vm-tools) for SLES12 and higher or OpenSuse
