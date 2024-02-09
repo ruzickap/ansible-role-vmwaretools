@@ -50,6 +50,10 @@
         name: vmware-tools-services
         state: started
         enabled: yes
+  rescue:
+    - name: Print when errors
+      ansible.builtin.debug:
+        msg: "I caught an error..."
   when: ansible_distribution_major_version|int <= 6 and ansible_virtualization_type == 'VMware'
 
 - name: Only for RHEL/CentOS >= 7
@@ -68,4 +72,8 @@
         state: started
         enabled: yes
       when: ansible_virtualization_type == 'VMware'
+  rescue:
+    - name: Print when errors
+      ansible.builtin.debug:
+        msg: "I caught an error..."
   when: ansible_distribution_major_version|int >= 7

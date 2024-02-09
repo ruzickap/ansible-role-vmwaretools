@@ -63,6 +63,10 @@
         update_cache: yes
       register: result
       until: result is succeeded
+  rescue:
+    - name: Print when errors
+      ansible.builtin.debug:
+        msg: "I caught an error..."
   when: ansible_distribution_release in [ 'lucid', 'natty', 'oneiric', 'precise' ] and dpkg_result.stdout is search('no packages found')
 
 - name: Installing Open VMware Tools (open-vm-tools) for non 'lucid', 'natty', 'oneiric', 'precise' Ubuntu systems
