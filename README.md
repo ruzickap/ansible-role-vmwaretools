@@ -13,7 +13,7 @@ Available variables are listed below, along with default values
 (see `defaults/main.yml`):
 
 ```yaml
-# The version of VMware Tools to install. Possible values can be found here: http://packages.vmware.com/tools/esx/index.html
+# The version of VMware Tools to install. Possible values can be found here: http://packages.vmware.com/tools/esx/
 vmwaretools_tools_version: latest
 
 # The server which holds the YUM repository. Customize this if you mirror public
