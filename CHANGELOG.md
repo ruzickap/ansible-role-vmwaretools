@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.0](https://github.com/ruzickap/ansible-role-vmwaretools/compare/v0.2.0...v0.3.0) (2024-09-14)
+
+
+### Features
+
+* add GitHub default templates ([#51](https://github.com/ruzickap/ansible-role-vmwaretools/issues/51)) ([5b9ee08](https://github.com/ruzickap/ansible-role-vmwaretools/commit/5b9ee08f248774718c47a0d40b089dc133f14405))
+* **gh:** add default GitHub repo files ([#43](https://github.com/ruzickap/ansible-role-vmwaretools/issues/43)) ([2682a03](https://github.com/ruzickap/ansible-role-vmwaretools/commit/2682a03ed9678beb863f532711f6ea04bc666d76))
+* **gh:** add default GitHub repo files ([#44](https://github.com/ruzickap/ansible-role-vmwaretools/issues/44)) ([04c412e](https://github.com/ruzickap/ansible-role-vmwaretools/commit/04c412e54d7a05fcbf6405794116caefe7371510))
+* **gha:** unify GHA - renovate, megalinter, markdown, and others ([#41](https://github.com/ruzickap/ansible-role-vmwaretools/issues/41)) ([88acfaf](https://github.com/ruzickap/ansible-role-vmwaretools/commit/88acfaf1830b614a498f70c4010207ab82a552bd))
+
 ## [v0.2.0](https://github.com/ruzickap/ansible-role-vmwaretools/compare/v0.1.2...v0.2.0) (2021-08-15)
 
 - Replace ini_file by community.general.ini_file [`#28`](https://github.com/ruzickap/ansible-role-vmwaretools/pull/28)
