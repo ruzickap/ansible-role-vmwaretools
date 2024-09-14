@@ -21,12 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the codebase
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           path: ${{ github.event.repository.name }}
 
       - name: Set up Python 3
-        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
         with:
           python-version: "3.x"
 
@@ -34,7 +34,9 @@ jobs:
         run: pip3 install ansible-base
 
       - name: Trigger a new import on Galaxy
+        env:
+          GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
         run: |
           cd "${GITHUB_REPOSITORY#*/}"
           ansible-galaxy role import \
-            --api-key "${{ secrets.GALAXY_API_KEY }}" "${GITHUB_REPOSITORY%/*}" "${GITHUB_REPOSITORY##*/}"
+            --api-key "${GALAXY_API_KEY}" "${GITHUB_REPOSITORY%/*}" "${GITHUB_REPOSITORY##*/}"
